@@ -14,10 +14,18 @@ export let prisonPrice= 500;
 export let loteryBonus=1000;
 export let loteryTryesNum=3;
 export let gameSpeed=1;
+export let skipStepsChanceCard=1;
 
 export let shadovCurrentPlayerAndStepColor='orange';
 export let shadovCurrentPlayerAndStep=`0px 0px 15px 15px ${shadovCurrentPlayerAndStepColor}`;
 
+export function addBankSum(sum){
+    bankSum = +bankSum + +sum;
+}
+
+export function storneBankSum(sum){
+    bankSum = +bankSum - +sum;
+}
 
 
 

@@ -22,7 +22,7 @@ const [ElementGameProcessInfo, setElementGameProcessInfo] = useState(getGameProc
         />)
     }
 
-    console.log(ElementGameProcessInfo);
+    //console.log(ElementGameProcessInfo);
 
 
     function renderGameProcessInfo(){
@@ -35,6 +35,7 @@ const [ElementGameProcessInfo, setElementGameProcessInfo] = useState(getGameProc
         <div className='inner-area'>
             <GameProcessInfo 
                 hidden={true} 
+                value={ElementGameProcessInfo}
                 gameBudget={bankSum}
                 сurrentPlayer={getCurrentPlayerNum()}
                 />

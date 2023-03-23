@@ -132,6 +132,25 @@ export function moneyStorneForPlayer(sum, playerId){
     });
 };
 
+
+export function moneyAddForCurrentPlayer(sum){
+    PlayersData.forEach((item)=>
+    {
+        if(item.playetCurrentMove===true){
+            item.playerBudget=+item.playerBudget+ +sum;
+        }
+    });
+};
+
+export function moneyStorneForCurrentPlayer(sum){
+    PlayersData.forEach((item)=>
+    {
+        if(item.playetCurrentMove===true){
+            item.playerBudget=item.playerBudget- +sum;
+        }
+    });
+};
+
 export function getCurrentPlayerSkipStep(){
     let playerSkipStep;
     PlayersData.forEach((item)=>
@@ -147,7 +166,7 @@ export function setCurrentPlayerSkipStepPlusNum(stepsCount){
     PlayersData.forEach((item)=>
     {
         if(item.playetCurrentMove===true){
-            item.playerSkipStep=item.playerSkipStep+ +stepsCount;
+            item.playerSkipStep=+item.playerSkipStep+ +stepsCount;
         }
     });
 };

@@ -46,6 +46,10 @@ import {bonusForFullPlayFieldRound,
         gameSpeed
     } from '../../../../data/GlobalData';
 
+import {getRandomChanceCard
+} from '../../../../data/ChanceCardsData'
+
+
 
 import {GameRoundIncrement} from '../../../../data/TestData';
 //import {TestStepsScenario, GameRound} from '../../../../data/TestData';
@@ -108,12 +112,7 @@ export default function GameControlPoints(props){
         return playcube; 
     }
 
-
-
-
-
-
-    function MakePlayerMove(){  
+    function MakePlayerMove(){ 
         //start functions      
         function GoToNextPlayerStep (){
             let nextPlayer = getCurrentPlayerNum()+1; 
@@ -250,7 +249,9 @@ export default function GameControlPoints(props){
                     function ifChanceTypeCardStep(){
                         //***object is a "Chance" type  (object owner is 'owner prohibited')                          
                         if (checkChanceTypeCard(newPlayFieldCardPosition)){
-                            alert ('Шанс (in progress)');
+                            let ChanceCardData=getRandomChanceCard();
+                            alert (`Випала картка шанс:\n\n${ChanceCardData.message}`);
+                            ChanceCardData.action();
                         }
                         //***********************************************
                     };
@@ -366,7 +367,7 @@ export default function GameControlPoints(props){
                                     moneyStorneForPlayer(7000, getCurrentPlayerNum());
                                 }  */
                                 
-                                playStepsCount=20;
+                                playStepsCount=10;
                                 //10 -bunker
                                 //28 - ZSU donat
                                 //30 -prison

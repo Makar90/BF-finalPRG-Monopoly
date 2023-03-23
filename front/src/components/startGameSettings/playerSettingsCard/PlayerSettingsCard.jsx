@@ -9,7 +9,7 @@ import './index.css';
 
 export default function PlayerSettingsCard(props){
     const [Color, setColor] = useState(/* getrandomColorHEX() */);
-    console.log(Color);
+    //console.log(Color);
     //let colore=getrandomColorHEX();
 
     return(
@@ -28,6 +28,7 @@ export default function PlayerSettingsCard(props){
                 className="set-player__player-color"
                 initialValue={props.color}
                 /* initialValue={colore} */
+                value={Color}
                 onChange={setColor}
                 placement="right"/>
             {/* <div
