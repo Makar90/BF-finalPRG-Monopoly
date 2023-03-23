@@ -1,3 +1,6 @@
+import {CardsData,getObjectPositionByType} from './CardsData';
+import {storneBankSum, addBankSum} from './GlobalData';
+
 export let PlayersData=[
     /*{
         playerName:playerName,
@@ -52,6 +55,14 @@ export function setCurrentPlayerPosition(position){
         if(item.playetCurrentMove===true){
             item.playerPlayFieldPosition=position;
         }
+    });
+};
+
+export function setAllPlayersOnPosition(positionType){
+    let cardPosition=getObjectPositionByType(positionType);
+    PlayersData.forEach((item)=>
+    {
+            item.playerPlayFieldPosition=cardPosition;
     });
 };
 
@@ -132,7 +143,6 @@ export function moneyStorneForPlayer(sum, playerId){
     });
 };
 
-
 export function moneyAddForCurrentPlayer(sum){
     PlayersData.forEach((item)=>
     {
@@ -149,6 +159,42 @@ export function moneyStorneForCurrentPlayer(sum){
             item.playerBudget=item.playerBudget- +sum;
         }
     });
+};
+
+export function moneyAddForAllPlayersByObjectType(sum, objectType){
+    let owners=[];
+    CardsData.forEach((item)=>
+    {
+        if(item.type===objectType && item.ownerId!==''){
+            owners.push(item.ownerId);
+        }
+    });
+    let ownersUnique=new Set(owners);
+    ownersUnique=Array.from(ownersUnique);    
+    ownersUnique.forEach((item)=>{
+        moneyAddForPlayer(sum, +item);
+    })
+    storneBankSum(sum*ownersUnique.length);
+};
+
+export function moneyStorneForAllPlayersByObjectType(sum, objectType){
+    let owners=[];
+    CardsData.forEach((item)=>
+    {
+        if(item.type===objectType && item.ownerId!==''){
+            owners.push(item.ownerId);
+        }
+    });
+    console.log(`owners`);
+    console.log(owners); 
+    let ownersUnique=new Set(owners);
+    ownersUnique=Array.from(ownersUnique);
+    console.log(`ownersUnique`);
+    console.log(ownersUnique);    
+    ownersUnique.forEach((item)=>{
+        moneyStorneForPlayer(sum, +item);
+    })
+    addBankSum(sum*ownersUnique.length);
 };
 
 export function getCurrentPlayerSkipStep(){
@@ -197,6 +243,13 @@ export function setCurrentPlayerRemoteStepPosibility(flag){
         if(item.playetCurrentMove===true){
             item.remoteStepPosibility=flag;
         }
+    });
+};
+
+export function setAllPlayerRemoteStepPosibility(flag){
+    PlayersData.forEach((item)=>
+    {
+        item.remoteStepPosibility=flag;
     });
 };
 

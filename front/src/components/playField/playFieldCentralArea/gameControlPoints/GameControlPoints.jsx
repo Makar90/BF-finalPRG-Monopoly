@@ -47,7 +47,10 @@ import {bonusForFullPlayFieldRound,
     } from '../../../../data/GlobalData';
 
 import {getRandomChanceCard
-} from '../../../../data/ChanceCardsData'
+    } from '../../../../data/ChanceCardsData'
+
+import {getRandomMunicipalTreasuresCard
+    } from '../../../../data/MunicipalTreasuresCardsData';
 
 
 
@@ -65,7 +68,7 @@ import {GameRoundIncrement} from '../../../../data/TestData';
 export default function GameControlPoints(props){
     const [PlayCube1, setPlayCube1] = useState(getPlayCube(0));
     const [PlayCube2, setPlayCube2] = useState(getPlayCube(0));
-
+    
 
     function getPlayCube(cubeValue){
         /* switch (cubeValue) {
@@ -223,7 +226,6 @@ export default function GameControlPoints(props){
                                 //_______________________________________________ 
                             }else if(window.confirm(`${getCurrentPlayerPName()}, бажаєш придбати об'єкт?\n     ${ObjectType}\n     ${ObjectName}\nВартість: ${objectPrice}$\nЦіна оренди твоїх об'єктів цього типу становитиме: ${getRepricePrice_ForAllCardsByOneOwnerAndTypePlusOneObject(getCurrentPlayerNum(), newPlayFieldCardPosition)}$\n\nГравцям рекомендується купувати будь-яку власність, оскільки якщо в банку залишаються непродані об'єкти, втрачається інтерес до гри`)){
                                 //___buy object
-                                console.log(`setPlayFieldCardOwner ${newPlayFieldCardPosition}; user: ${getCurrentPlayerNum()}`);
                                 moneyStorneForPlayer(objectPrice, getCurrentPlayerNum());
                                 setPlayFieldCardOwner(newPlayFieldCardPosition, getCurrentPlayerNum());
                                 repriceForAllCardsByOneOwnerAndType(getCurrentPlayerNum(), newPlayFieldCardPosition)
@@ -240,17 +242,23 @@ export default function GameControlPoints(props){
                     };  
 
                     function ifMunicipalTreasuresTypeCardStep(){
-                        //***object is a "Municipal treasures" type (object owner is 'owner prohibited')                       
+                        //***object is a "Municipal treasures" type (object owner is 'owner prohibited')
+                        //let stepsToGoal=0;                       
                         if (checkMunicipalTreasuresTypeCard(newPlayFieldCardPosition)){
-                            alert ('Міська скарбниця (in progress)');
+                            let MunicipalTreasuresCard=getRandomMunicipalTreasuresCard();
+                            alert (`Випала картка "Міська скарбниця":\n\n${MunicipalTreasuresCard.message}`);
+                            MunicipalTreasuresCard.action();
+                            //reget price if playr check Municipal prison
+                            objectPrice= getObjectPrice(getCurrentPlayerPosition());
                         }
+                        //return stepsToGoal;
                         //***********************************************
                     };
                     function ifChanceTypeCardStep(){
                         //***object is a "Chance" type  (object owner is 'owner prohibited')                          
                         if (checkChanceTypeCard(newPlayFieldCardPosition)){
                             let ChanceCardData=getRandomChanceCard();
-                            alert (`Випала картка шанс:\n\n${ChanceCardData.message}`);
+                            alert (`Випала картка "Шанс":\n\n${ChanceCardData.message}`);
                             ChanceCardData.action();
                         }
                         //***********************************************
@@ -284,7 +292,7 @@ export default function GameControlPoints(props){
                     };
                     function ifPrisonTypeCardStep(){
                         //***object is a "Prison" type  (object owner is 'owner prohibited')                         
-                        if (checkPrisonTypeCard(newPlayFieldCardPosition)){
+                        if (checkPrisonTypeCard(getCurrentPlayerPosition())){
                             if(window.confirm(`${getCurrentPlayerPName()}, ти потрапив на об'єкт - "В'язниця"!\nНажаль, наступні два ходи доведеться пропустити:(\nАбо ти можеш внести заставу і продовжувати гру\n\nВнести заставу: ${objectPrice}$?`)){
                                 moneyStorneForPlayer(objectPrice, getCurrentPlayerNum());
                                 setBankSum(+bankSum+objectPrice);
@@ -310,6 +318,9 @@ export default function GameControlPoints(props){
                     };
                     //End functions----------                       
 
+
+
+
                     if(checkAndPromoteRemoteStepPosibility()){ 
                         return;
                     }
@@ -319,18 +330,22 @@ export default function GameControlPoints(props){
                     BuyNotEmptyOwnerObject(objectOwner, objectPrice);
                     BuyEmptyOwnerObject(newPlayFieldCardPosition, objectPrice);  
 
-                    ifMunicipalTreasuresTypeCardStep();
-                    ifChanceTypeCardStep();
+                    /* let MunicipalTreasuresTypeCardStepReturnSteps = ifMunicipalTreasuresTypeCardStep(); 
+                    if(MunicipalTreasuresTypeCardStepReturnSteps>=0){
+                        MakePlayfieldStepsMove(MunicipalTreasuresTypeCardStepReturnSteps);
+                        return;
+                    } */
+                    ifMunicipalTreasuresTypeCardStep(); 
+
+                    ifChanceTypeCardStep();                    
                     ifBunkerTypeCardStep();
                     if(ifLoteryTypeCardStep()){
                         return;
                     };
                     ifZSUDonateTypeCardStep();
                     ifPrisonTypeCardStep();
-                    ifChornobaivkaTypeStep();
-                    
-                    GoToNextPlayerStep ();                
-                    
+                    ifChornobaivkaTypeStep();                    
+                    GoToNextPlayerStep (); 
                     playStepsTimer='';
                     return playStepsTimer;
                     //===
@@ -367,7 +382,7 @@ export default function GameControlPoints(props){
                                     moneyStorneForPlayer(7000, getCurrentPlayerNum());
                                 }  */
                                 
-                                playStepsCount=10;
+                                playStepsCount=4;
                                 //10 -bunker
                                 //28 - ZSU donat
                                 //30 -prison
@@ -398,6 +413,12 @@ export default function GameControlPoints(props){
         };        
         //end functions
         
+
+        //posibility to call some one function from enothe place
+        /* if(FunctionName=='MakePlayfieldStepsMove'){
+            MakePlayfieldStepsMove(FunctionArgument);
+            //return;
+        }  */
         //disable double click on playMoveButton
         let elementGameControlPoinsMakeMove = document.querySelector('.game-control-poins__make-move');
         elementGameControlPoinsMakeMove.style.pointerEvents= 'none';
@@ -415,7 +436,6 @@ export default function GameControlPoints(props){
         
     
         
-    
 
     return(
         <div className={`game-control-poins${props.hidden ? " game-control-poins--hidden": ""}`}>

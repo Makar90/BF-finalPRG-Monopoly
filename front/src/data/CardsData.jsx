@@ -139,7 +139,7 @@ export const CardsData=[
     {
         id:9,
         faceBackground:'../img/cards/front-strategyObject.jpg',
-        type:'Стратегічний об\'єкт',
+        type:`Стратегічний об'єкт`,
         name:'Запорізька АЕС-1',        
         img:'../img/cards/icon-strategyObject-ZAES-1.png',
         price:3000,        
@@ -224,7 +224,7 @@ export const CardsData=[
     {
         id:14,
         faceBackground:'../img/cards/front-strategyObject.jpg',
-        type:'Стратегічний об\'єкт',
+        type:`Стратегічний обєкт`,
         name:'Аеропорт "Антонов"',        
         img:'../img/cards/icon-strategyObject-airportAntonov.png',
         price:3000,        
@@ -376,7 +376,7 @@ export const CardsData=[
     {
         id:23,
         faceBackground:'../img/cards/front-strategyObject.jpg',
-        type:'Стратегічний об\'єкт',
+        type:`Стратегічний об'єкт`,
         name:'Запорізька АЕС',        
         img:'../img/cards/icon-strategyObject-ZAES-1.png',
         price:3000,        
@@ -510,7 +510,7 @@ export const CardsData=[
     {
         id:31,
         faceBackground:'../img/cards/front-cornersCard.jpg',
-        type:'В\'язниця',
+        type:`В'язниця`,
         name:'',        
         img:'../img/cards/icon-cornersCard-prison.png',
         price: prisonPrice,        
@@ -659,7 +659,7 @@ export const CardsData=[
     {
         id:40,
         faceBackground:'../img/cards/front-strategyObject.jpg',
-        type:'Стратегічний об\'єкт',
+        type:`Стратегічний об'єкт`,
         name:'Острів Зміїний',        
         img:'../img/cards/icon-strategyObject-Zmiiniy.png',
         price:3000,        
@@ -688,7 +688,6 @@ export function setPlayFieldCardOwner(cardId, userId){
 export function getObjectOwner(cardId){
     if(checkObjectOwner(cardId)===true && checkObjectOwnerProhibited(cardId)!==true){
         let ownerId=CardsData[cardId].ownerId;
-        console.log(`ownerId FUNCTION ${ownerId}`)
         return +ownerId;
     }else{
         let unrealOwner=9999999;
@@ -780,34 +779,16 @@ export function checkChornobaivkaTypeCard(cardId){
     }    
 };
 
-/* function getRentPriceForAllCardsByTypeAndOwner(allCardsByTypeAndOwner){
-};
-
-function getAllCardsByTypeAndOwner(ownerId, cardType){
-}; */
-
 export function repriceForAllCardsByOneOwnerAndType(ownerId, cardNum){
     let cardType=CardsData[cardNum].type;
-    console.log(`cardType`);
-    console.log(cardType);
-
     let allCardsByOwnerAndType=[];
     CardsData.forEach((item)=>{
         if(item.ownerId===ownerId && item.type===cardType){
             allCardsByOwnerAndType.push(item);
         }
     });
-    console.log(`allCardsByOwnerAndType`);
-    console.log(allCardsByOwnerAndType);
-
     let rentLevel=allCardsByOwnerAndType.length-1;
-    console.log(`rentLevel`);
-    console.log(rentLevel);
-
     let rentLevelPrice=CardsData[cardNum].priceIncoming[rentLevel];
-    console.log(`rentLevelPrice`);
-    console.log(rentLevelPrice);
-
     allCardsByOwnerAndType.forEach((itemPattern)=>{
         CardsData.forEach((itemGoal)=>{
             if(itemPattern.id===itemGoal.id){
@@ -815,8 +796,6 @@ export function repriceForAllCardsByOneOwnerAndType(ownerId, cardNum){
             }
         });
     });
-    console.log(`CardsData`);
-    console.log(CardsData);
 };
 
 export function getRepricePrice_ForAllCardsByOneOwnerAndTypePlusOneObject(ownerId, cardNum){
@@ -850,6 +829,16 @@ export function getPriceSoldSumFromAllObjectsByOwner(ownerId){
         sum =sum+ +item.priceSold;
     });
     return +sum;
+}
+
+export function getObjectPositionByType(objectType){
+    let position=0;
+    CardsData.forEach((item, index)=>{
+        if(item.type===objectType){
+            position= index;
+        }
+    });
+    return position;
 }
 
 

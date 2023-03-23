@@ -11,7 +11,6 @@ import {skipStepsChanceCard,
 
 
 
-
 export let ChanceCardsData=[
     {
         id:1,
@@ -150,32 +149,6 @@ export let ChanceCardsData=[
     },
 ];
 
-let cardsTypes=[
-    {
-        type:'skipMove',
-        action(){setCurrentPlayerSkipStepPlusNum(skipStepsChanceCard)},
-    },
-    {
-        type:'bonus',
-        action(){moneyStorneForCurrentPlayer(this.price); addBankSum(this.price)}
-    },
-    {
-        type:'fine',
-        action(){moneyStorneForCurrentPlayer(this.price); addBankSum(this.price)},
-    },
-];
-
-function AddActionForCardByType(){
-    ChanceCardsData.forEach((item)=>{
-    if(item.type === cardsTypes.type){
-        item.action=cardsTypes.action;
-    }
-    });
-} 
-AddActionForCardByType();
-
-
-
 function getOnlyNOTUsageCards(){
     let onlyNOTUsageCards=[];
     ChanceCardsData.forEach((item)=>{
@@ -191,17 +164,17 @@ function getOnlyNOTUsageCards(){
         onlyNOTUsageCards=getOnlyNOTUsageCards();
     }
     return onlyNOTUsageCards;
-} 
+};
 
 export function getRandomChanceCard(){  
     let NOTUsageCards=getOnlyNOTUsageCards(); 
-    console.log(`ChanceCardsData`);
+    /* console.log(`ChanceCardsData`);
     console.log(ChanceCardsData);
     console.log(`NOTUsageCards`);
-    console.log(NOTUsageCards); 
+    console.log(NOTUsageCards); */ 
     let rand=Math.floor(Math.random() * NOTUsageCards.length);
-    console.log(`rand`);
-    console.log(rand);
+    /* console.log(`rand`);
+    console.log(rand); */
     let randNOTUsageCard=NOTUsageCards[rand];
     ChanceCardsData.forEach((item)=>{
         if(item.id===randNOTUsageCard.id){
@@ -209,9 +182,9 @@ export function getRandomChanceCard(){
             randNOTUsageCard.usageflag=true;
         }
     });
-    console.log(`randNOTUsageCard`);
+    /* console.log(`randNOTUsageCard`);
     console.log(randNOTUsageCard);
-    console.log(`===============`);
+    console.log(`===============`); */
 
     return randNOTUsageCard;
-}
+};
