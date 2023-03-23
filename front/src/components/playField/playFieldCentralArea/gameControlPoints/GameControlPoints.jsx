@@ -382,7 +382,7 @@ export default function GameControlPoints(props){
                                     moneyStorneForPlayer(7000, getCurrentPlayerNum());
                                 }  */
                                 
-                                playStepsCount=4;
+                                //playStepsCount=4;
                                 //10 -bunker
                                 //28 - ZSU donat
                                 //30 -prison
