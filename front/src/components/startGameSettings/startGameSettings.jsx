@@ -69,7 +69,8 @@ export default function StartGame(props){
                     playerActive:true,
                     playerSkipStep:0,
                     remoteStepPosibility: false,
-                    playerLoteryGame:0
+                    playerLoteryGame:0,
+                    prisonInvoiceFlag:false
                 }; 
                 PlayersData.push(dataPlayer);            
                 }); 

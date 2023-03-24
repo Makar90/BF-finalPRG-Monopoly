@@ -17,7 +17,9 @@ import {PlayersData,
         setCurrentPlayerRemoteStepPosibility,
         getCurrentPlayerRemoteStepPosibility,
         setplayerLoteryGame,
-        getplayerLoteryGame
+        getplayerLoteryGame,
+        /*setCurrentPlayerPrisonInviceFlag,
+        getCurrentPlayerPrisonInviceFlag*/
     } from '../../../../data/PlayersData';
 
 import {CardsData,
@@ -55,7 +57,8 @@ import {getRandomMunicipalTreasuresCard
 
 
 import {GameRoundIncrement} from '../../../../data/TestData';
-//import {TestStepsScenario, GameRound} from '../../../../data/TestData';
+
+import {TestStepsScenario, GameRound} from '../../../../data/TestData';
 
 //import { useState } from "../../../../../public/img/cube-sides/";
 
@@ -67,8 +70,7 @@ import {GameRoundIncrement} from '../../../../data/TestData';
 
 export default function GameControlPoints(props){
     const [PlayCube1, setPlayCube1] = useState(getPlayCube(0));
-    const [PlayCube2, setPlayCube2] = useState(getPlayCube(0));
-    
+    const [PlayCube2, setPlayCube2] = useState(getPlayCube(0));    
 
     function getPlayCube(cubeValue){
         /* switch (cubeValue) {
@@ -81,7 +83,6 @@ export default function GameControlPoints(props){
             default:
                 break;
         }; */
-        
         let cubeImage='';
         switch (cubeValue) {
             case 1:
@@ -105,7 +106,6 @@ export default function GameControlPoints(props){
             default:
                 cubeImage='../img/cube-sides/cube-error.png';
           }
-
         let playcube=(
             <div className='game-control-poins__play-cube'
                     cubevalue={cubeValue}
@@ -129,6 +129,7 @@ export default function GameControlPoints(props){
             props.reRenderGameProcessInfo_Players();
             props.reRenderPlayFieldSteps();
         };
+        //function ifPrisonTypeCardStep(){};
         function checkSkipStepForPlayer(){
             if(getCurrentPlayerSkipStep()){ 
                 setCurrentPlayerSkipStepMinusNum(1); 
@@ -182,10 +183,28 @@ export default function GameControlPoints(props){
                     function BonusforRound(bonusForFullPlayFieldRoundFlag){
                         //***bonus for full play round
                         if(bonusForFullPlayFieldRoundFlag /* &&  newPlayFieldCardPosition===0 /* 1 */){
-                            bonusForFullPlayFieldRoundFlag=false;
                             moneyAddForPlayer(bonusForFullPlayFieldRound,getCurrentPlayerNum());
                             setBankSum(+bankSum- +bonusForFullPlayFieldRound);
                             props.reRenderGameProcessInfo_Players();
+                            bonusForFullPlayFieldRoundFlag=false;
+
+                            /*await
+                            function sleep(ms) {
+                                return new Promise(resolve => setTimeout(resolve, ms));
+                            }                            
+                            async function demo() {
+                                for (let i = 0; i < 2; i++) {
+                                    //тут чекаємо все що не тут продовжить своє виконання
+                                    console.log(`Waiting ${i} seconds...`);
+                                    await sleep(i * 1000);
+                                    
+                                }
+                                //тут продовжуємо код
+                                console.log('Done');
+                            }                            
+                            demo();
+                            */
+
                             alert(`${getCurrentPlayerPName()}, вітаємо! Тобі прилетів бонус за пройдене коло: ${bonusForFullPlayFieldRound}$`);                              
                         }
                         //***********************************************
@@ -194,9 +213,9 @@ export default function GameControlPoints(props){
                         //***object owner (play field cards) is NOT empty and object owner not a 'owner prohibited'
                         if(objectOwner!==9999999){
                             //---is curent player owner object 
-                            console.log(`objectOwner ${objectOwner}`);
+                            /* console.log(`objectOwner ${objectOwner}`);
                             console.log(`getCurrentPlayer() ${getCurrentPlayerNum()}`);
-                            console.log(CardsData);
+                            console.log(CardsData); */
                             if(objectOwner===getCurrentPlayerNum()){
                                 alert (`${getCurrentPlayerPName()}, це твій об'єкт\nСтягуй вартість оренди його з інших гравців, що сюди потрапляють\nНабувай у власність більше об'єктів даного типу і збільшуй орендну плату`);
                             //-----------------------------------------------
@@ -216,9 +235,7 @@ export default function GameControlPoints(props){
                         if(checkObjectOwner(newPlayFieldCardPosition)===false){                            
                             //---buy object or auction                            
                             let ObjectType=getObjectType(newPlayFieldCardPosition);
-                            let ObjectName=getObjectName(newPlayFieldCardPosition);                           
-
-
+                            let ObjectName=getObjectName(newPlayFieldCardPosition);  
                             if(getCurrentPlayerBudget()-objectPrice<0){
                                 //___auction object 
                                 alert ('Нажаль у тебе недостатньо коштів на придбання цього об\'єкту \nБуде проведено аукціон');
@@ -227,6 +244,7 @@ export default function GameControlPoints(props){
                             }else if(window.confirm(`${getCurrentPlayerPName()}, бажаєш придбати об'єкт?\n     ${ObjectType}\n     ${ObjectName}\nВартість: ${objectPrice}$\nЦіна оренди твоїх об'єктів цього типу становитиме: ${getRepricePrice_ForAllCardsByOneOwnerAndTypePlusOneObject(getCurrentPlayerNum(), newPlayFieldCardPosition)}$\n\nГравцям рекомендується купувати будь-яку власність, оскільки якщо в банку залишаються непродані об'єкти, втрачається інтерес до гри`)){
                                 //___buy object
                                 moneyStorneForPlayer(objectPrice, getCurrentPlayerNum());
+                                setBankSum(+bankSum+objectPrice);
                                 setPlayFieldCardOwner(newPlayFieldCardPosition, getCurrentPlayerNum());
                                 repriceForAllCardsByOneOwnerAndType(getCurrentPlayerNum(), newPlayFieldCardPosition)
                                 props.reRenderPlayFieldSteps(); 
@@ -239,8 +257,7 @@ export default function GameControlPoints(props){
                                 }
                                 //_______________________________________________ 
                         }
-                    };  
-
+                    };
                     function ifMunicipalTreasuresTypeCardStep(){
                         //***object is a "Municipal treasures" type (object owner is 'owner prohibited')
                         //let stepsToGoal=0;                       
@@ -248,7 +265,7 @@ export default function GameControlPoints(props){
                             let MunicipalTreasuresCard=getRandomMunicipalTreasuresCard();
                             alert (`Випала картка "Міська скарбниця":\n\n${MunicipalTreasuresCard.message}`);
                             MunicipalTreasuresCard.action();
-                            //reget price if playr check Municipal prison
+                            //reget price if playtr check Municipal prison -for correct price-object wiev
                             objectPrice= getObjectPrice(getCurrentPlayerPosition());
                         }
                         //return stepsToGoal;
@@ -312,14 +329,10 @@ export default function GameControlPoints(props){
                         }
                         //***********************************************
                     }; 
-
                     function objectAuction(ObjectType, ObjectName, objectPrice){
                         alert (`аукціон (in progress)\n ${ObjectType} - [${ObjectName}]: ${objectPrice}`);
                     };
-                    //End functions----------                       
-
-
-
+                    //End functions----------                  
 
                     if(checkAndPromoteRemoteStepPosibility()){ 
                         return;
@@ -329,14 +342,7 @@ export default function GameControlPoints(props){
                     let objectOwner=getObjectOwner(newPlayFieldCardPosition);
                     BuyNotEmptyOwnerObject(objectOwner, objectPrice);
                     BuyEmptyOwnerObject(newPlayFieldCardPosition, objectPrice);  
-
-                    /* let MunicipalTreasuresTypeCardStepReturnSteps = ifMunicipalTreasuresTypeCardStep(); 
-                    if(MunicipalTreasuresTypeCardStepReturnSteps>=0){
-                        MakePlayfieldStepsMove(MunicipalTreasuresTypeCardStepReturnSteps);
-                        return;
-                    } */
                     ifMunicipalTreasuresTypeCardStep(); 
-
                     ifChanceTypeCardStep();                    
                     ifBunkerTypeCardStep();
                     if(ifLoteryTypeCardStep()){
@@ -358,7 +364,6 @@ export default function GameControlPoints(props){
             let generateCubeEffectsCount=20;
             let generateCubeEffectsCounter=0;
             let generateCubeTimerDelay = 50/gameSpeed;
-            
             let generateCubeTimer = setTimeout(function request() {
                 if(generateCubeEffectsCounter<generateCubeEffectsCount){
                     cubeValue1=Math.floor(Math.random() * (6 - 1) + 1);
@@ -371,16 +376,17 @@ export default function GameControlPoints(props){
                     elementGameControlPoinsMakeMove.style.pointerEvents= 'all';
                     //===Make animate move on play step / play field cards (go to playFieldCard - go to each with deley)
                     if(type==='MakePlayFieldSteps'){
-                        
                         let playStepsCount=+cubeValue1+ +cubeValue2;
-                            //EmulatorTest on/off
-                               /*  if(TestStepsScenario[getCurrentPlayerNum()][GameRound]){
+                            
+                                //EmulatorTest on/off
+                                  if(TestStepsScenario[getCurrentPlayerNum()][GameRound]){
                                     playStepsCount=TestStepsScenario[getCurrentPlayerNum()][GameRound];
-                                    console.log(TestStepsScenario[getCurrentPlayerNum()][GameRound]);
+                                    //console.log(TestStepsScenario[getCurrentPlayerNum()][GameRound]);
                                 }
                                 if(GameRound===11 && getCurrentPlayerNum()===1){
                                     moneyStorneForPlayer(7000, getCurrentPlayerNum());
-                                }  */
+                                }  
+                                
                                 
                                 //playStepsCount=4;
                                 //10 -bunker
@@ -414,14 +420,17 @@ export default function GameControlPoints(props){
         //end functions
         
 
-        //posibility to call some one function from enothe place
-        /* if(FunctionName=='MakePlayfieldStepsMove'){
-            MakePlayfieldStepsMove(FunctionArgument);
-            //return;
-        }  */
         //disable double click on playMoveButton
         let elementGameControlPoinsMakeMove = document.querySelector('.game-control-poins__make-move');
         elementGameControlPoinsMakeMove.style.pointerEvents= 'none';
+        
+        //catch prison invoice
+        /* if (getCurrentPlayerPrisonInviceFlag()){
+            setCurrentPlayerPrisonInviceFlag(false);
+            ifPrisonTypeCardStep();
+        }; */
+
+        //cath skip move for player
         if (checkSkipStepForPlayer()){
             elementGameControlPoinsMakeMove.style.pointerEvents= 'all';
             return;

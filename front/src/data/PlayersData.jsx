@@ -11,7 +11,8 @@ export let PlayersData=[
         playerActive:true,
         playerSkipStep:0,
         remoteStepPosibility: false,
-        playerLoteryGame:0
+        playerLoteryGame:0б
+        prisonInvoiceFlag:false
     };  */ 
 ];
 
@@ -193,7 +194,7 @@ export function moneyStorneForAllPlayersByObjectType(sum, objectType){
     console.log(ownersUnique);    
     ownersUnique.forEach((item)=>{
         moneyStorneForPlayer(sum, +item);
-    })
+    });
     addBankSum(sum*ownersUnique.length);
 };
 
@@ -260,6 +261,58 @@ export function setplayerLoteryGame(playerNum, countCubesPlay){
 export function getplayerLoteryGame(playerNum){
     return PlayersData[playerNum].playerLoteryGame;
 }
+
+
+export function getAllUniqueOwnerByTypeObject(objectType){
+    let owners=[];
+    CardsData.forEach((item)=>
+    {
+        if(item.type===objectType && item.ownerId!==''){
+            owners.push(item.ownerId);
+        }
+    });
+    let ownersUnique=new Set(owners);
+    ownersUnique=Array.from(ownersUnique); 
+    return ownersUnique;  
+}
+
+export function setAllPlayersByObjectTypeOnPositionByObjectType(objectTypeOwners, objectTypeGoalPosition){
+    let goalPosition = getObjectPositionByType(objectTypeGoalPosition);
+    let ownersUnique = getAllUniqueOwnerByTypeObject(objectTypeOwners);
+    ownersUnique.forEach((item)=>{
+        PlayersData[item].playerPlayFieldPosition=goalPosition;
+    });
+};
+
+
+
+export function getCurrentPlayerPrisonInviceFlag(){
+    let prisonInviceFlag;
+    PlayersData.forEach((item)=>
+    {
+        if(item.playetCurrentMove===true){
+            prisonInviceFlag=item.prisonInvoiceFlag;
+        }
+    });
+    console.log(prisonInviceFlag);
+    return prisonInviceFlag;
+};
+
+export function setCurrentPlayerPrisonInviceFlag(flag){
+    PlayersData.forEach((item)=>
+    {
+        if(item.playetCurrentMove===true){
+            item.prisonInvoiceFlag=flag;
+        }
+    });
+};
+
+export function setPrisonInviceFlagForPlayers(playersArray, flag){
+    playersArray.forEach((index)=>{
+        PlayersData[index].prisonInvoiceFlag=flag;
+    })
+};
+
 
 
 

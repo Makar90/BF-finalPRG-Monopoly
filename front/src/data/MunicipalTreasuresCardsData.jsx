@@ -5,7 +5,11 @@ import {/* setCurrentPlayerSkipStepPlusNum, */
         moneyStorneForAllPlayersByObjectType,
         setAllPlayersOnPosition,
         setAllPlayerRemoteStepPosibility,
-        setCurrentPlayerPosition
+        setCurrentPlayerPosition,
+        /*setAllPlayersByObjectTypeOnPositionByObjectType,
+        getAllUniqueOwnerByTypeObject,
+        setPrisonInviceFlagForPlayers,
+        getCurrentPlayerNum*/
         /* getCurrentPlayerPosition */
     } from './PlayersData';
 
@@ -132,16 +136,34 @@ export let MunicipalTreasuresCards=[
         type:'goToPrison',
         price:'',
         action(){setCurrentPlayerPosition(getObjectPositionByType(`В'язниця`));
-                /* let stepsToGoal=getObjectPositionByType(`В'язниця`)-getCurrentPlayerPosition();
-                console.log('stepsToGoal');                
-                console.log(stepsToGoal);
-                this.stepsCounter=stepsToGoal; */
             },
         img:'',
         usageflag:false,
         //stepsCounter:0,
         get message(){return `Зрадник Медведчук назвав тебе спільником\nДо закінчення ведення слідства доведеться пройти до в'зниці`},
-    }, 
+    },
+    /*{
+        id:14,
+        type:'goToPrisonOwnersByObjectType',
+        price:'',
+        action(){setAllPlayersByObjectTypeOnPositionByObjectType('ЗМІ',`В'язниця`);
+                //set prison invoice on a player level
+                let uniquePlayersByObjectType = getAllUniqueOwnerByTypeObject('ЗМІ');
+                
+                //delete current user from array as he will be catch in main code on prison position
+                let currentPlayerIndexInArray = uniquePlayersByObjectType.indexOf(getCurrentPlayerNum());
+                if(currentPlayerIndexInArray >= 0) {
+                    uniquePlayersByObjectType.splice(currentPlayerIndexInArray,1);
+                }
+                
+                //set prisonInvoice flag for other palyers and cath him on a start when they are move step
+                setPrisonInviceFlagForPlayers(uniquePlayersByObjectType, true);
+            },
+        img:'',
+        usageflag:false,
+        //stepsCounter:0,
+        get message(){return `СБУ затримала власників ЗМІ через сюжет місцезнаходження нашої техніки\nВласники ЗМІ мають пройти до в'язниці`},
+    },*/
 ];
 
 
