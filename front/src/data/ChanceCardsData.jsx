@@ -168,13 +168,7 @@ function getOnlyNOTUsageCards(){
 
 export function getRandomChanceCard(){  
     let NOTUsageCards=getOnlyNOTUsageCards(); 
-    /* console.log(`ChanceCardsData`);
-    console.log(ChanceCardsData);
-    console.log(`NOTUsageCards`);
-    console.log(NOTUsageCards); */ 
     let rand=Math.floor(Math.random() * NOTUsageCards.length);
-    /* console.log(`rand`);
-    console.log(rand); */
     let randNOTUsageCard=NOTUsageCards[rand];
     ChanceCardsData.forEach((item)=>{
         if(item.id===randNOTUsageCard.id){
@@ -182,9 +176,5 @@ export function getRandomChanceCard(){
             randNOTUsageCard.usageflag=true;
         }
     });
-    /* console.log(`randNOTUsageCard`);
-    console.log(randNOTUsageCard);
-    console.log(`===============`); */
-
     return randNOTUsageCard;
 };

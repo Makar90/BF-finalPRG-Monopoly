@@ -58,7 +58,7 @@ import {getRandomMunicipalTreasuresCard
 
 import {GameRoundIncrement} from '../../../../data/TestData';
 
-import {TestStepsScenario, GameRound} from '../../../../data/TestData';
+//import {TestStepsScenario, GameRound} from '../../../../data/TestData';
 
 //import { useState } from "../../../../../public/img/cube-sides/";
 
@@ -377,18 +377,17 @@ export default function GameControlPoints(props){
                     //===Make animate move on play step / play field cards (go to playFieldCard - go to each with deley)
                     if(type==='MakePlayFieldSteps'){
                         let playStepsCount=+cubeValue1+ +cubeValue2;
-                            
-                                //EmulatorTest on/off
-                                  if(TestStepsScenario[getCurrentPlayerNum()][GameRound]){
+                                //EmulatorTest on/off start
+                                /* if(TestStepsScenario[getCurrentPlayerNum()][GameRound]){
                                     playStepsCount=TestStepsScenario[getCurrentPlayerNum()][GameRound];
                                     //console.log(TestStepsScenario[getCurrentPlayerNum()][GameRound]);
                                 }
                                 if(GameRound===11 && getCurrentPlayerNum()===1){
                                     moneyStorneForPlayer(7000, getCurrentPlayerNum());
                                 }  
+                                //EmulatorTest on/off end                             
                                 
-                                
-                                //playStepsCount=4;
+                                playStepsCount=3; */
                                 //10 -bunker
                                 //28 - ZSU donat
                                 //30 -prison
