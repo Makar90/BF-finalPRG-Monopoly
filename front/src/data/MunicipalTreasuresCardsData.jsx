@@ -6,10 +6,11 @@ import {/* setCurrentPlayerSkipStepPlusNum, */
         setAllPlayersOnPosition,
         setAllPlayerRemoteStepPosibility,
         setCurrentPlayerPosition,
-        /*setAllPlayersByObjectTypeOnPositionByObjectType,
+        setAllPlayersByObjectTypeOnPositionByObjectType,
         getAllUniqueOwnerByTypeObject,
         setPrisonInviceFlagForPlayers,
-        getCurrentPlayerNum*/
+        getCurrentPlayerNum,
+        setplayerLoteryGame
         /* getCurrentPlayerPosition */
     } from './PlayersData';
 
@@ -23,7 +24,7 @@ import {getObjectPositionByType} from './CardsData';
 
 
 export let MunicipalTreasuresCards=[
-   {
+    {
         id:1,
         type:'bonus',
         price:300,
@@ -142,7 +143,7 @@ export let MunicipalTreasuresCards=[
         //stepsCounter:0,
         get message(){return `Зрадник Медведчук назвав тебе спільником\nДо закінчення ведення слідства доведеться пройти до в'зниці`},
     },
-    /*{
+    {
         id:14,
         type:'goToPrisonOwnersByObjectType',
         price:'',
@@ -163,7 +164,19 @@ export let MunicipalTreasuresCards=[
         usageflag:false,
         //stepsCounter:0,
         get message(){return `СБУ затримала власників ЗМІ через сюжет місцезнаходження нашої техніки\nВласники ЗМІ мають пройти до в'язниці`},
-    },*/
+    },
+    {
+        id:15,
+        type:'goToLoteryGame',
+        price:'',
+        action(){setCurrentPlayerPosition(getObjectPositionByType('Лотерея'));
+                setplayerLoteryGame(getCurrentPlayerNum(), 5);
+            },
+        img:'',
+        usageflag:false,
+        //stepsCounter:0,
+        get message(){return `В честь нашої перемоги перейдіть до "Лотереї" та отримайте 5 кидків кубиків\n`},
+    },
 ];
 
 

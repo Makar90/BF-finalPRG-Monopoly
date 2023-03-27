@@ -18,8 +18,9 @@ import {PlayersData,
         getCurrentPlayerRemoteStepPosibility,
         setplayerLoteryGame,
         getplayerLoteryGame,
-        /*setCurrentPlayerPrisonInviceFlag,
-        getCurrentPlayerPrisonInviceFlag*/
+        getCurrentPlayerObjectPrice,
+        setCurrentPlayerPrisonInviceFlag,
+        getCurrentPlayerPrisonInviceFlag
     } from '../../../../data/PlayersData';
 
 import {CardsData,
@@ -63,6 +64,24 @@ import {GameRoundIncrement} from '../../../../data/TestData';
 //import { useState } from "../../../../../public/img/cube-sides/";
 
 
+
+function ifPrisonTypeCardStep(){
+    //***object is a "Prison" type  (object owner is 'owner prohibited') 
+    let objectPrice=getCurrentPlayerObjectPrice();                        
+    if (checkPrisonTypeCard(getCurrentPlayerPosition())){
+        if(window.confirm(`${getCurrentPlayerPName()}, ти потрапив на об'єкт - "В'язниця"!\nНажаль, наступні два ходи доведеться пропустити:(\nАбо ти можеш внести заставу і продовжувати гру\n\nВнести заставу: ${objectPrice}$?`)){
+            moneyStorneForPlayer(objectPrice, getCurrentPlayerNum());
+            setBankSum(+bankSum+objectPrice);
+            alert(`${getCurrentPlayerPName()}, ти вніс заставу: ${objectPrice}$\nПропускати 2 наступні ходи не доведеться`);
+            return true;
+        }else{                                            
+            setCurrentPlayerSkipStepPlusNum(2);
+            alert(`Застава не внесена: ${objectPrice}$\n${getCurrentPlayerPName()}, доведеться пропустити 2 наступні ходи`);
+            return false;
+        }
+    }
+    //***********************************************
+};
 
 
 
@@ -289,9 +308,10 @@ export default function GameControlPoints(props){
                         //***********************************************
                     };
                     function ifLoteryTypeCardStep(){
-                        if (checkLoteryTypeCard(newPlayFieldCardPosition)){
-                            alert (`${getCurrentPlayerPName()}, ти потрапив на поле лотереї\nКинь кубики 3 рази, якщо хоча б раз випаде дубль, то отримаєш бонус ${loteryBonus}$ з банку`);
-                            setplayerLoteryGame(getCurrentPlayerNum(),loteryTryesNum);
+                        if (checkLoteryTypeCard(getCurrentPlayerPosition())){
+                            let playerLoteryGame=PlayersData[getCurrentPlayerNum()].playerLoteryGame;
+                            alert (`${getCurrentPlayerPName()}, ти потрапив на поле лотереї\nКинь кубики х${playerLoteryGame<loteryTryesNum ? loteryTryesNum : playerLoteryGame} разів, якщо хоча б раз випаде дубль, то отримаєш бонус ${loteryBonus}$ з банку`);
+                            playerLoteryGame<loteryTryesNum && setplayerLoteryGame(getCurrentPlayerNum(),loteryTryesNum);
                             elementGameControlPoinsMakeMove.classList.add("game-control-poins__make-move--lotery");
                             return true;
                         }else{
@@ -307,20 +327,7 @@ export default function GameControlPoints(props){
                         }
                         //***********************************************
                     };
-                    function ifPrisonTypeCardStep(){
-                        //***object is a "Prison" type  (object owner is 'owner prohibited')                         
-                        if (checkPrisonTypeCard(getCurrentPlayerPosition())){
-                            if(window.confirm(`${getCurrentPlayerPName()}, ти потрапив на об'єкт - "В'язниця"!\nНажаль, наступні два ходи доведеться пропустити:(\nАбо ти можеш внести заставу і продовжувати гру\n\nВнести заставу: ${objectPrice}$?`)){
-                                moneyStorneForPlayer(objectPrice, getCurrentPlayerNum());
-                                setBankSum(+bankSum+objectPrice);
-                                alert(`${getCurrentPlayerPName()}, ти вніс заставу: ${objectPrice}$\nПропускати 2 наступні ходи не доведеться`);
-                            }else{                                            
-                                setCurrentPlayerSkipStepPlusNum(2);
-                                alert(`Застава не внесена: ${objectPrice}$\n${getCurrentPlayerPName()}, доведеться пропустити 2 наступні ходи`);
-                            }
-                        }
-                        //***********************************************
-                    };
+                    
                     function ifChornobaivkaTypeStep(){        
                         //***object is a "Step burn" type  (object owner is 'owner prohibited')                         
                         if (checkChornobaivkaTypeCard(newPlayFieldCardPosition)){
@@ -385,9 +392,9 @@ export default function GameControlPoints(props){
                                 if(GameRound===11 && getCurrentPlayerNum()===1){
                                     moneyStorneForPlayer(7000, getCurrentPlayerNum());
                                 }  
-                                //EmulatorTest on/off end                             
+                                //EmulatorTest on/off end  */                           
                                 
-                                playStepsCount=3; */
+                                //playStepsCount=3; 
                                 //10 -bunker
                                 //28 - ZSU donat
                                 //30 -prison
@@ -424,10 +431,16 @@ export default function GameControlPoints(props){
         elementGameControlPoinsMakeMove.style.pointerEvents= 'none';
         
         //catch prison invoice
-        /* if (getCurrentPlayerPrisonInviceFlag()){
+        if (getCurrentPlayerPrisonInviceFlag()){
             setCurrentPlayerPrisonInviceFlag(false);
-            ifPrisonTypeCardStep();
-        }; */
+            props.reRenderPlayFieldSteps();
+            props.reRenderGameProcessInfo_Players();
+            if(!ifPrisonTypeCardStep()){
+                GoToNextPlayerStep ();
+                elementGameControlPoinsMakeMove.style.pointerEvents= 'all';
+                return;
+            }            
+        }; 
 
         //cath skip move for player
         if (checkSkipStepForPlayer()){

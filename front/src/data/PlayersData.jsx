@@ -1,4 +1,7 @@
-import {CardsData,getObjectPositionByType} from './CardsData';
+import {CardsData,
+        getObjectPositionByType,
+        getObjectPrice
+    } from './CardsData';
 import {storneBankSum, addBankSum} from './GlobalData';
 
 export let PlayersData=[
@@ -311,6 +314,19 @@ export function setPrisonInviceFlagForPlayers(playersArray, flag){
     playersArray.forEach((index)=>{
         PlayersData[index].prisonInvoiceFlag=flag;
     })
+};
+
+
+export function getCurrentPlayerObjectPrice(){
+    let objectPrice;
+    PlayersData.forEach((player, playerIndex)=>
+    {
+        if(player.playetCurrentMove===true){
+            objectPrice=getObjectPrice(player.playerPlayFieldPosition);
+        };
+    });
+    console.log(objectPrice);
+    return objectPrice;
 };
 
 
