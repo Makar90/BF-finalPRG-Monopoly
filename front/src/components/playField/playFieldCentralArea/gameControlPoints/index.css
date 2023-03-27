@@ -57,6 +57,7 @@
     padding: 30px;
     border-radius: 30px;
     transition: 1s;
+    z-index: 99;
 }
 
 .game-control-poins__make-move--lotery .game-control-poins__play-cube {

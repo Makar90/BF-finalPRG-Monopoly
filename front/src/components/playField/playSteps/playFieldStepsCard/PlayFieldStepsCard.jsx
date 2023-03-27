@@ -16,7 +16,7 @@ export default function PlayFieldStepsCard(props){
             <h5 className="card-common__price"
                 style={{backgroundColor:props.ownerIndicatorColor}}
                 >
-                    {props.cardPrice}
+                {props.cardPrice}
             </h5>
         </div>
     );

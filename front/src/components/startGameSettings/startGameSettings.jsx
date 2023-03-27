@@ -49,9 +49,11 @@ export default function StartGame(props){
         let elementGameProcessInfo = elementInnerArea.querySelector('.game-process-info');
         elementGameProcessInfo.classList.remove("game-process-info--hidden"); */
         let elementInnerAreaChildren = document.querySelector('.inner-area').childNodes;
-        elementInnerAreaChildren.forEach((item)=>{
+        elementInnerAreaChildren.forEach((item)=>{            
             item.style.visibility='visible';
         });
+        let elementManageOjects = document.querySelector('.manage-objects');
+        elementManageOjects.style.visibility='hidden';
 
         function setPlayersData(){   
             let elementsPlayersCards= elementStartGameSettings.querySelectorAll('.set-player');         

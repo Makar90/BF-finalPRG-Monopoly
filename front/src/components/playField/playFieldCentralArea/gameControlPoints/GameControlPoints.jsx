@@ -85,6 +85,16 @@ function ifPrisonTypeCardStep(){
 
 
 
+function showManageObjectWindow(){
+    let elementManageOjects = document.querySelector('.manage-objects');
+    elementManageOjects.classList.remove('manage-objects--hidden');
+    if(elementManageOjects.style.visibility==='visible'){
+        elementManageOjects.style.visibility='hidden'
+    }else{
+        elementManageOjects.style.visibility='visible'
+    }
+}
+
 
 
 export default function GameControlPoints(props){
@@ -462,6 +472,7 @@ export default function GameControlPoints(props){
         <div className={`game-control-poins${props.hidden ? " game-control-poins--hidden": ""}`}>
             <button className="game-control-poins__item"
                     /* onClick={setTimeout(RandomPlayCubes, 1000)} */
+                    onClick={showManageObjectWindow}
                     >
                 Управління об'єктами
             </button>
