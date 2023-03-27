@@ -177,4 +177,4 @@ export function getRandomChanceCard(){
         }
     });
     return randNOTUsageCard;
-};
+}; 
